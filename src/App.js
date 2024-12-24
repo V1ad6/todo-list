@@ -1,11 +1,27 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TaskCard from './components/TaskCard/TaskCard';
 import AddTaskModal from './components/AddTaskModal/AddTaskModal';
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
+  const loaded = useRef(false);
+
+  useEffect(() => {
+    const savedTasks = localStorage.getItem('tasks');
+    if (savedTasks) {
+      setTasks(JSON.parse(savedTasks));
+    }
+  }, []);
+  
+  useEffect(() => {
+    if (loaded.current) {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    } else {
+      loaded.current = true;
+    }
+  }, [tasks]);
 
   const toggleTask = (id) => {
     setTasks((prevTasks) =>
