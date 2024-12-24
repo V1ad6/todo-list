@@ -1,70 +1,100 @@
-# Getting Started with Create React App
+# Запити, використані для написання доданку
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Було використано 3 основні запити до Chat GPT, за допомогою яких була зроблена велика частина доданку
 
-## Available Scripts
+## Створення "картки" завдання
+### Запит:
+Я створюю react-додаток типу todo-list. Ось верстка додатку, яка вже є:
+import './App.css';
+import TaskCard from './components/TaskCard/TaskCard';
 
-In the project directory, you can run:
+function App() {
+  return (
+    <div className="App">
+      <h1 className="title">ToDo List</h1>
+      <TaskCard/>
+    </div>
+  );
+}
 
-### `npm start`
+export default App;
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Та вже написані стилі додатку:
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-### `npm test`
+html, body, #root {
+  height: 100%;
+}
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#root {
+  background-color: rgb(0, 9, 49);
+  padding: 15px 0;
+}
 
-### `npm run build`
+.App {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, rgb(1, 60, 189), rgb(0, 42, 133));
+  border-radius: 15px;
+  max-width: 1000px;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  padding: 27px;
+}
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+.title {
+  font-family: "Josefin Sans", serif;
+  color: rgb(216, 221, 253);
+  text-align: center;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.192);
+  padding: 20px 0 15px;
+}
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+@media (max-width: 1024px) {
+  .App {
+    border-radius: 0;
+  }
+}
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Потрібно зробити верстку та окремий файл стилів (врахувати, що файл стилів є МОДУЛЕМ: TaskCard.module.css. Тому стилі повинні підключатись відповідним способом) для <TaskCard/>. Цей компонент є відображенням завдання, який користувач додав та планує зробити. Така "картка" повинна мати коротку назву, поле з більш детальним описом та кастомний чекбокс, за допомогою якого можна буде відмітити виконане завдання
 
-### `npm run eject`
+### Результат:
+В результаті даного запиту Chat GPT майже ідеально виконав поставлену задачу, а також додатково інтегрував даний компонент в створюваний доданок. Після аналізу результатів роботи ШІ з'ясувалось, що потрібно біло задати шрифт, виправити дещо в стилі самого чекбоксу та помилку, через яку при натисканні на чекбокс однієї картки реагував чекбокс іншої, при умові якщо в карток була однакова назва.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Модальне вікно
+### Запит:
+<div className="App">
+  <h1 className="title">ToDo List</h1>
+  <button className="add-btn">+</button>
+  {tasks.map((task) => (
+    <TaskCard
+      key={task.id}
+      id={task.id}
+      title={task.title}
+      description={task.description}
+      isCompleted={task.isCompleted}
+      onToggle={() => toggleTask(task.id)}
+    />
+  ))}
+</div>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Я додав елемент button. Треба зробити так, щоб при натисненні цієї кнопки відкривалось вікно для створення нового завдання. Вікно є окремим компонентом в окремому файлі зі своїм файлом .module.css. Воно повинно бути розташовано по центру, мати під собою напівпрозорий темний оверлей на весь екран, містити заголовок (яка вказує на те, що це вікно саме для додавання нового завдання), кнопку для закриття вікна на одному рівні з загловком, поле вводу назви завдання, поле вводу опису, кнопку очищення полів та кнопку додавання нового елементу в масив, який ти вже мені створив у файлі App
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Результат:
+Результат виконання даного запиту відповідав усім вимогам та дизайну сторінки. Помилок не було. Потрібно виправити пару дрібних стилістичних недоліків.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Local Storage
+### Запит:
+За допомогою хука useEffect треба зробити так, щоб при відкритті доданку масив брав дані з localStorage та додав нові дані туди при закритті доданку.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Результат:
+Зчитування даних з Local Storage у масив виконано без помилок. Замість оновлення Local Storage при закритті доданку Chat GPT реалізував оновлення при кожній зміні масиву, але було вирішено залишити це саме таким чином. Також в цій частині роботи з локальним сховищем ставалась помилка, через яку незважаючи на парвильне зчитування даних масив залишався порожнім. Дану помилку я вже виправив власноруч.
